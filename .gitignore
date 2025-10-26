@@ -1,0 +1,30 @@
+# Environnements Python
+venv/
+.env
+
+# Dossiers de données (volumineux) mais on garde la structure
+data/
+!data/.gitkeep
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# Fichiers personnels
+notes_*
+bin.txt
