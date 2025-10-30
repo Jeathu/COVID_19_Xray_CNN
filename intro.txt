@@ -1,0 +1,103 @@
+Projet 1  : Recherche en Big Data 
+Sujet : Détection de COVID19 à partir d'images radiographiques (X-Ray)
+
+Objectif :
+     Avoir une image noir / blanc ou RGB ✅
+
+
+
+1) Implémenter  1 CNN en python (convolution Neuronal Network) 
+Travailler sur une Data type Image (portrait d'une personne/ caractère)  
+    (objet doit être numérisé (pixel) :
+        1.(réinterpréter  l'image sous forme de pixel) 
+        2.( construire des vecteurs data)
+
+
+
+Uniformiser l'image ( normalisé l'image)✅
+
+
+Choix des paramètres pour le traitement , scribe + Padding (largeur hauteur)❎
+    ( Convolution + Pooling ) => Extraction de caractérisation , Kenel=> matrice de convolution  avec les # parties images.
+
+couche finale = couche probabiliste 
+
+
+ADAM : Adaptivité Moment Optimization : 
+1-méthoe de descente de gradiant avec moment qui change durant l'app. 
+2- Combinée  RMS prop. Moment du second ordre , il prend eb compte l'évolution dans le  temps.
+
+
+3- Mettre en œuvre un CNN  type  LENETS:
+    -Optimisation  un optimisation par la méthode de gradient 
+
+Optimisation un ADAM
+
+
+
+VOC
+// la convergence
+
+
+
+
+
+
+
+
+
+✅ Ce qui est fait
+    Importation des bibliothèhes nécessaires
+
+    tensorflow, keras, numpy, matplotlib, sklearn → ✅
+
+    Chargement et prétraitement des images
+
+    Redimensionnement à 128x128 ✅
+
+    Normalisation des pixels entre 0 et 1 ✅
+
+Division des données :
+
+    80% entraînement
+
+    20% validation
+
+    10% test (ou 20% validation + 10% test selon votre code) ✅
+
+
+
+Préparation des jeux de données
+
+Utilisation de tf.data avec cache() et prefetch() ✅
+
+Mélange et partitionnement corrects ✅
+
+
+
+
+
+❌ Ce qui semble manquer ou n’est pas encore visible
+    Architecture CNN de type LeNet-5 ou similaire
+
+Aucun modèle CNN n'est défini dans le code fourni.
+
+Couches de convolution, pooling, padding
+
+Pas encore implémentées.
+
+Optimiseur Adam
+
+Pas encore spécifié dans un modèle.
+
+Couche finale probabiliste (Softmax)
+
+Absente pour l’instant.
+
+Entraînement du modèle
+
+Aucun appel à model.fit() ou équivalent.
+
+Évaluation et métriques
+
+Pas encore de phase de test ou de classification report.
