@@ -2,6 +2,11 @@
 venv/
 .env
 
+# Fichiers personnels
+notes_*
+intro.txt
+bin.txt
+
 # Dossiers de données (volumineux) mais on garde la structure
 data/
 !data/.gitkeep
@@ -25,7 +30,3 @@ __pycache__/
 # Logs
 *.log
 
-# Fichiers personnels
-notes_*
-intro.txt
-bin.txt
