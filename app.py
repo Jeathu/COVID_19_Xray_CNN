@@ -2,6 +2,8 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import gdown
+import os
 
 st.set_page_config(page_title="COVID-19 Detector", page_icon="🫁", layout="wide")
 
@@ -22,18 +24,32 @@ st.markdown("""
 
 
 """ Load Model covid_model.h5  """
+
+    
 @st.cache_resource
 def load_model():
-    """Charge le modèle."""
-    try:
-        model = tf.keras.models.load_model('models/covid_model_v2.h5')
-        return model, True
-    except:
+    """Charge le modèle depuis Google Drive si absent localement."""
+    model_path = 'models/covid19_xray_model_v4.h5'
+    drive_url = 'https://drive.google.com/file/d/1I5YdWUw8D5t7Or156xD-eSvQsMfXktiL/view?usp=drive_link'  # Remplace par l'ID réel
+
+    # Crée le dossier models/ si besoin
+    os.makedirs('models', exist_ok=True)
+
+    # Télécharge si le modèle n'existe pas
+    if not os.path.exists(model_path):
         try:
-            model = tf.keras.models.load_model('models/covid_model_v2')
-            return model, True
-        except:
+            with st.spinner("Téléchargement du modèle depuis Google Drive..."):
+                gdown.download(drive_url, model_path, quiet=False)
+        except Exception as e:
+            st.error(f"Erreur lors du téléchargement du modèle : {e}")
             return None, False
+
+    try:
+        model = tf.keras.models.load_model(model_path)
+        return model, True
+    except Exception as e:
+        st.error(f"Erreur lors du chargement du modèle : {e}")
+        return None, False
 
 
 
@@ -42,7 +58,7 @@ def load_model():
 def preprocess_image(image):
     """Prétraite l'image pour le modèle (ajuste selon ton modèle)."""
     # Redimensionne selon la taille d'entrée de ton modèle
-    img = image.resize((128, 128))  # Changé à 128x128
+    img = image.resize((224, 224))  # Changé à 224x224
     img = img.convert('RGB')  # Convertit en RGB
     img_array = np.array(img) / 255.0  # Normalise
     img_array = np.expand_dims(img_array, axis=0)  # Ajoute batch dimension
@@ -91,45 +107,45 @@ col1, col2 = st.columns([1, 1])
 with col1:
     st.subheader("📤 Upload X-Ray")
     uploaded_file = st.file_uploader("Choisir une radiographie", type=['png', 'jpg', 'jpeg'])
-    
+
     if uploaded_file:
         image = Image.open(uploaded_file)
         st.image(image, caption="Radiographie", use_container_width=True)
 
 with col2:
     st.subheader("🔬 Résultats")
-    
+
     if uploaded_file:
         with st.spinner('Analyse en cours...'):
             # Prédiction
             img_array = preprocess_image(image)
             prediction = model.predict(img_array, verbose=0)[0][0]
-            
+
             covid_prob = float(prediction * 100)
             normal_prob = float((1 - prediction) * 100)
             has_covid = bool(prediction > 0.5)
             confidence = float(max(prediction, 1 - prediction) * 100)
-        
+
         # Résultat
         if has_covid:
             st.error("### 🦠 COVID-19 DÉTECTÉ")
         else:
             st.success("### ✅ PAS DE COVID-19")
-        
+
         st.markdown("---")
-        
+
         # Métriques
         m1, m2 = st.columns(2)
         m1.metric("Confiance", f"{confidence:.1f}%")
         m2.metric("COVID-19", f"{covid_prob:.1f}%")
-        
+
         st.markdown("---")
         st.subheader("📊 Probabilités")
-        
+
         st.write("**COVID-19:**")
         st.progress(covid_prob / 100)
         st.write(f"{covid_prob:.2f}%")
-        
+
         st.write("**Normal:**")
         st.progress(normal_prob / 100)
         st.write(f"{normal_prob:.2f}%")
