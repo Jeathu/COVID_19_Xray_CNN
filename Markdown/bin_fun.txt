@@ -1,0 +1,29 @@
+def select_best_optimizer(results, overfitting_threshold=5.0):
+    valid = {
+        name: m for name, m in results.items()
+        if m['train'] < 0.99 and abs(m['train'] - m['val']) * 100 <= overfitting_threshold
+    }
+
+    best = max((valid or results).items(), key=lambda x: x[1]['test'])[0]
+    return best
+
+
+# Utilisation
+best_optimizer = select_best_optimizer(results)
+print(f"Meilleur optimiseur: {best_optimizer}")
+
+
+
+
+
+
+# Référence
+     # https://keras.io/api/layers/preprocessing_layers/image_preprocessing/rescaling/
+     # Transformer les pixels de [0, 255] → [0, 1]
+
+# Normalisation des données d’entrée
+'''
+normalization_layer = tf.keras.layers.Rescaling(1./255)
+train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
+test_ds = test_ds.map(lambda x, y: (normalization_layer(x), y))
+'''
