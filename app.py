@@ -24,18 +24,14 @@ st.markdown("""
 
 
 """ Load Model covid_model.h5  """
-
-    
 @st.cache_resource
 def load_model():
     """Charge le modèle depuis Google Drive si absent localement."""
     model_path = 'models/covid19_xray_model_v4.h5'
-    drive_url = 'https://drive.google.com/file/d/1I5YdWUw8D5t7Or156xD-eSvQsMfXktiL/view?usp=drive_link'  # Remplace par l'ID réel
+    drive_url = 'https://drive.google.com/uc?id=1I5YdWUw8D5t7Or156xD-eSvQsMfXktiL'  # Lien direct pour gdown
 
-    # Crée le dossier models/ si besoin
     os.makedirs('models', exist_ok=True)
 
-    # Télécharge si le modèle n'existe pas
     if not os.path.exists(model_path):
         try:
             with st.spinner("Téléchargement du modèle depuis Google Drive..."):
@@ -50,7 +46,6 @@ def load_model():
     except Exception as e:
         st.error(f"Erreur lors du chargement du modèle : {e}")
         return None, False
-
 
 
 
